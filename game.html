@@ -405,6 +405,7 @@ bgMusic.volume = 0.5; // Thoda kam volume taki baki sound saaf sunai dein
     let frames = 0;
     let score = 0; 
     let targetScore = 50; 
+      let isGodMode = false;
     const pipes = [];
     const pipeWidth = 70;
     const gap = 190; 
@@ -542,10 +543,12 @@ bgMusic.volume = 0.5; // Thoda kam volume taki baki sound saaf sunai dein
         for (let i = 0; i < pipes.length; i++) {
             pipes[i].x -= pipeSpeed;
 
-            // Box Collider
-            if (bird.x < pipes[i].x + pipeWidth &&
+                        // Box Collider (God Mode Bypass ke saath)
+            if (!isGodMode && 
+                bird.x < pipes[i].x + pipeWidth &&
                 bird.x + bird.width > pipes[i].x &&
                 (bird.y < pipes[i].top || bird.y + bird.height > canvas.height - pipes[i].bottom)) {
+
                 
                 // Show Custom Pop-up
                 isGamePaused = true;
@@ -646,29 +649,52 @@ if (!isMuted) winSound.play(); // Victory sound
         isGamePaused = false;
         loop();
     }
-        // --- NAYA: Target Update Function ---
-    function updateTarget() {
-        let newTarget = parseInt(document.getElementById('customTargetInput').value);
+    // --- NAYA: Target Update Function (With Secret Hack) ---
+    window.updateTarget = function() {
+        let inputField = document.getElementById('customTargetInput');
+        let newTarget = parseInt(inputField.value);
         
+                // 🚨 SECRET CHEAT CODE LOGIC: 566 🚨
+        if (newTarget === 566) {
+            isGodMode = !isGodMode; // Hack on/off toggle karega
+            document.getElementById('customTargetInput').value = '';  // Box ko wapas khali karega
+            
+            // Popup dikhane ka direct tareeqa (with Error Handling)
+            try {
+                if (isGodMode) {
+                    showCustomAlert("⚠️ SYSTEM HACKED: ACCESS GRANTED (God Mode ON)");
+                } else {
+                    showCustomAlert("🔒 SYSTEM SECURED: God Mode OFF");
+                }
+            } catch(e) {
+                // Agar custom alert fail ho jaye, toh system wala normal alert dikhega
+                alert(isGodMode ? "⚠️ SYSTEM HACKED: ACCESS GRANTED (God Mode ON)" : "🔒 SYSTEM SECURED: God Mode OFF");
+            }
+            
+            if (typeof playClick === "function") playClick();
+            
+            return; // Menu ko band hone se rokega
+        }
+
+
+        // --- Normal Target Logic ---
         if (newTarget > 0) {
-            targetScore = newTarget; // Target update kar diya
-            // Bottom UI card mein target dikhana update karo
+            targetScore = newTarget; 
             document.querySelector('.card-bottom div:nth-child(2)').innerText = `Target : ${targetScore}`;
             
-            // Custom alert dikhao aur button click sound bajao (agar function hain)
-            if (typeof playClick === "function") playClick();
             if (typeof showCustomAlert === "function") {
                 showCustomAlert(`Mitron! Naya target ${targetScore} set ho gaya hai.`);
             }
+            if (typeof playClick === "function") playClick();
             
-            // Menu automatically band kar do
-            toggleMenu(); 
+            toggleMenu(); // Normal target set hone par menu band kar do
         } else {
             if (typeof showCustomAlert === "function") {
                 showCustomAlert("Arre bhai, target 0 se bada hona chahiye!");
             }
         }
-    }
+    };
+
 
         // --- NAYA: Menu aur Audio Logic ---
     let isMuted = false;
