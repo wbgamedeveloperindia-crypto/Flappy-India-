@@ -34,6 +34,30 @@
             color: white;
             overflow: hidden;
         }
+                /* NAYA: Download APK Button */
+        .download-btn {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            margin-top: 25px;
+            background: #ffcc00;
+            color: #333;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 5px 15px rgba(255, 204, 0, 0.3);
+            transition: transform 0.2s;
+            box-sizing: border-box;
+        }
+
+        .download-btn:hover {
+            transform: scale(1.05);
+            background: #e6b800;
+        }
+        
 
         /* Glassmorphism Main Card */
         .index-card {
@@ -135,6 +159,8 @@
             <img src="enter_btn.png" alt="Enter Game" class="enter-img" onerror="this.src='https://via.placeholder.com/220x80?text=ENTER+GAME'">
             <div class="enter-text">Enter the game</div>
         </div>
+                <a href="Flappy-India.apk" download="Flappy-India.apk" class="download-btn">Download APK</a>
+        
 
         <div class="footer-info">
             © 2026 Flappy India - Fucking shit donaal ka chaatne wala
